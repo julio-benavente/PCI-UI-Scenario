@@ -67,7 +67,7 @@ const formattingData = (data: any): IData[] => {
     q_au_2: Number(e.q_au_2),
     period_yr: Number(e.period_yr),
     i_deg: Number(e.i_deg),
-    pha: e.pha,
+    pha: e.pha === "Y" ? "Yes" : e.pha === "N" ? "No" : "",
     orbit_class: e.orbit_class,
   }));
 };
