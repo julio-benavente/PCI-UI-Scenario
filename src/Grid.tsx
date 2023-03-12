@@ -56,7 +56,11 @@ interface IData {
 const formattingData = (data: any): IData[] => {
   return data.map((e: IData) => ({
     designation: e.designation,
-    discovery_date: new Date(e.discovery_date),
+    discovery_date: new Date(e.discovery_date).toLocaleDateString(["en-US"], {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }),
     h_mag: Number(e.h_mag),
     moid_au: Number(e.moid_au),
     q_au_1: Number(e.q_au_1),
