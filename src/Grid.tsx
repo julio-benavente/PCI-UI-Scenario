@@ -3,7 +3,7 @@ import { ColDef } from "ag-grid-community";
 import data from "./near-earth-asteroids.json";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 const defaultColDef = {
   sortable: true,
@@ -79,10 +79,43 @@ const NeoGrid = (): JSX.Element => {
     window.document.title = "Near-Earth Object Overview";
   }, []);
 
+  const gridRef = useRef<AgGridReact>(null);
+
+  const clearFiltersAndSorters = useCallback(() => {
+    gridRef.current!.api.setFilterModel(null);
+    gridRef.current!.columnApi.applyColumnState({
+      defaultState: { sort: null },
+    });
+  }, []);
+
   return (
     <div className="ag-theme-alpine" style={{ height: 900, width: 1920 }}>
-      <h1>Near-Earth Object Overview</h1>
+      <div
+        style={{
+          display: "grid",
+          gap: "15px",
+          gridAutoColumns: "auto",
+          gridAutoFlow: "column",
+          justifyContent: "start",
+          alignItems: "center",
+        }}
+      >
+        <h1>Near-Earth Object Overview</h1>
+        <button
+          style={{
+            padding: "8px 16px",
+            border: "3px black solid",
+            background: "white",
+            cursor: "pointer",
+          }}
+          onClick={clearFiltersAndSorters}
+        >
+          Clear Filters and Sorters
+        </button>
+      </div>
+
       <AgGridReact
+        ref={gridRef}
         rowData={dataFormated}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
